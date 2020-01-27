@@ -18,7 +18,7 @@
 		"fq_prompt" : null
 	},
 	"amend_merchant_name" : {
-		"slot_list" : [disamb_yn_changeofdetails],
+		"slot_list" : ["disamb_yn_changeofdetails"],
 		"prerequisites" : null,
 		"lambda_function_name" : "AmendMerchNameCodeHook",
 		"fq_prompt" : null
