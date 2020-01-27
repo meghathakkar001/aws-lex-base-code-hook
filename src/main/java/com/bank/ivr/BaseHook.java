@@ -220,14 +220,15 @@ public abstract class BaseHook {
 		LexResponse lexResponse = new LexResponse();
 		Map<String, String> sessionAttributes = request.getSessionAttributes();
 		if (!rfc.equals(intent.getIntentName())) {
-			request.getCurrentIntent().setName(rfc);
+			return switchIntent(request,getLambdaFunctionName(rfc));
+			/*request.getCurrentIntent().setName(rfc);
 
 			final AmendBankDetailsCodeHook amendBankDetailsCodeHook = LambdaInvokerFactory
 					.builder()
 					.lambdaClient(AWSLambdaClientBuilder.defaultClient())
 					.functionAlias(rfcCodeHookAlias)
 					.build(AmendBankDetailsCodeHook.class);
-			return amendBankDetailsCodeHook.invokeHook(request);
+			return amendBankDetailsCodeHook.invokeHook(request);*/
 			/*
 			 * AmazonLexRuntime client =
 			 * AmazonLexRuntimeClientBuilder.defaultClient();
