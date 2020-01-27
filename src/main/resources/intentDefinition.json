@@ -1,0 +1,50 @@
+{
+	"identification" : {
+		"slot_list" : ["midtid"],
+		"prerequisites" : null,
+		"lambda_function_name" : "IdentificationCodeHook",
+		"fq_prompt" : null
+	},
+	"amend_bank_details" : {
+		"slot_list" : [],
+		"prerequisites" : "identification",
+		"lambda_function_name" : "AmendBankDetailsCodeHook",
+		"fq_prompt" : null
+	},
+	"amend_legal_entity" : {
+		"slot_list" : [],
+		"prerequisites" : "identification",
+		"lambda_function_name" : "AmendLegalEntityCodeHook",
+		"fq_prompt" : null
+	},
+	"amend_merchant_name" : {
+		"slot_list" : [disamb_yn_changeofdetails],
+		"prerequisites" : null,
+		"lambda_function_name" : "AmendMerchNameCodeHook",
+		"fq_prompt" : null
+	},
+	"query_speak_to_agent" : {
+		"slot_list" : [],
+		"prerequisites" : "identification",
+		"lambda_function_name" : "SpeakToAgentCodeHook",
+		"fq_prompt" : "Please elaborate more on why do you want to speak to an agent ?"
+	},
+	"yes_change_of_details" : {
+		"slot_list" : [],
+		"prerequisites" : "identification",
+		"lambda_function_name" : "YesChangeOfDetailsCodeHook",
+		"fq_prompt" : null
+	},
+	"no_change_of_details" : {
+		"slot_list" : [],
+		"prerequisites" : "identification",
+		"lambda_function_name" : "NoChangeOfDetailsCodeHook",
+		"fq_prompt" : null
+	},
+	"not_sure_change_of_details" : {
+		"slot_list" : [],
+		"prerequisites" : "identification",
+		"lambda_function_name" : "NotSureChangeOfDetailsCodeHook",
+		"fq_prompt" : null
+	}
+}

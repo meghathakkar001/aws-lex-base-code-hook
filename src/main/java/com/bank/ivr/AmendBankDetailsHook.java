@@ -38,12 +38,13 @@ public class AmendBankDetailsHook extends BaseHook{
 
         List<Prerequisite> preRequisites= new ArrayList<>();
         Prerequisite prerequisite= new Prerequisite();
-        prerequisite.setIntentName("Identification");
-        prerequisite.setLambdaCodeHookAlias("Identification");
+        prerequisite.setIntentName("identification");
+        prerequisite.setLambdaCodeHookAlias("IdentificationCodeHook");
         preRequisites.add(prerequisite);
         intent.setPreRequisites(preRequisites);
         intent.setIntentAlias("AmendBankDetails");
 
         this.setIntent(intent);
     }
+    
 }

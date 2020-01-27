@@ -22,17 +22,17 @@ public class IdentificationHook extends BaseHook{
     @Override
     protected void initializeIntent() {
         Intent intent= new Intent();
-        intent.setIntentName("Identification");
+        intent.setIntentName("identification");
         intent.setAcknowledgeIntent(false);
         List<Slot> slots= new ArrayList<>();
 
         Slot machineID= new Slot();
-        machineID.setSlotName("MerchantID");
+        machineID.setSlotName("midtid");
         machineID.setPrimaryPrompt("<speak>For identification, please tell me your machine I.D.</speak>");
         slots.add(machineID);
         intent.setMandatorySlots(slots);
         intent.setPreRequisites(new ArrayList<>());
-        intent.setIntentAlias("Identification");
+        intent.setIntentAlias("identification");
 
         this.setIntent(intent);
 
