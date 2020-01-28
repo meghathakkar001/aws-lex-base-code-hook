@@ -170,8 +170,6 @@ public abstract class BaseHook {
 				return true;
 			}
 		}
-
-
 		return false;
 	}
 
