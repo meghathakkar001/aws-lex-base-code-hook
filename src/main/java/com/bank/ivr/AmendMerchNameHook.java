@@ -39,7 +39,7 @@ public class AmendMerchNameHook extends BaseHook {
         intent.setIntentName("amend_merchant_name");
         intent.setAcknowledgeIntent(false);
         List<Slot> slots= new ArrayList<>();
-
+        intent.setMandatorySlots(slots);
         Slot machineID= new Slot();
         machineID.setSlotName("disamb_yn_changeofdetails");
         machineID.setPrimaryPrompt("<speak>Have any of your business details changed with companies house recently"

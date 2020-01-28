@@ -73,7 +73,7 @@ public abstract class BaseHook {
 					.get(mandatorySlot.getSlotName());
 			System.out.println(intent.getIntentName() + ": Slot value for "
 					+ mandatorySlot.getSlotName() + " is: " + slotValue);
-			if(StringUtils.isNullOrEmpty(slotValue)){
+			if(!StringUtils.isNullOrEmpty(slotValue)){
 				String functionName = getLambdaFunctionName(slotValue);
 				if(!StringUtils.isNullOrEmpty(functionName)){
 					lexResponse = switchIntent(request,functionName);
@@ -165,7 +165,7 @@ public abstract class BaseHook {
 		if (slotSize == 1) {
 			Slot mandatorySlot = intent.getMandatorySlots().get(0);
 			String slotName = mandatorySlot.getSlotName();
-			if (slotName.startsWith("Disamb")) {
+			if (slotName.startsWith("disamb")) {
 				return true;
 			}
 		}
