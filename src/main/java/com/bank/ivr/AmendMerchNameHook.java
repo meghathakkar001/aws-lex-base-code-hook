@@ -18,7 +18,7 @@ public class AmendMerchNameHook extends BaseHook {
         dialogAction.setType("Close");
         Message message= new Message();
 
-        message.setContent("<speak>Thanks. Transferring you to an agent who can help with this</speak>");
+        message.setContent("Thanks. Transferring you to an agent who can help with this");
         message.setContentType("SSML");
         dialogAction.setMessage(message);
         //dialogAction.setSlots(intent.get);
@@ -37,13 +37,13 @@ public class AmendMerchNameHook extends BaseHook {
     protected void initializeIntent() {
     	Intent intent= new Intent();
         intent.setIntentName("amend_merchant_name");
-        intent.setAcknowledgeIntent(false);
+        intent.setAcknowledgeIntent(true);
+        intent.setAcknolwegementPrompt("Okay. amend the merchant name. ");
         List<Slot> slots= new ArrayList<>();
 
         Slot machineID= new Slot();
         machineID.setSlotName("disamb_yn_changeofdetails");
-        machineID.setPrimaryPrompt("<speak>Have any of your business details changed with companies house recently"
-        		+ "</speak>");
+        machineID.setPrimaryPrompt("Have any of your business details changed with companies house recently");
         slots.add(machineID);
         intent.setMandatorySlots(slots);
         intent.setPreRequisites(new ArrayList<>());

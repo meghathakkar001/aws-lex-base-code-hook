@@ -28,7 +28,7 @@ public class IdentificationHook extends BaseHook{
 
         Slot machineID= new Slot();
         machineID.setSlotName("midtid");
-        machineID.setPrimaryPrompt("<speak>For identification, please tell me your machine I.D.</speak>");
+        machineID.setPrimaryPrompt("For identification, please tell me your machine I.D.");
         slots.add(machineID);
         intent.setMandatorySlots(slots);
         intent.setPreRequisites(new ArrayList<>());

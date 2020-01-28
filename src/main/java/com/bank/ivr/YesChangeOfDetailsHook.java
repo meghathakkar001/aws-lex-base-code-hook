@@ -37,10 +37,19 @@ public class YesChangeOfDetailsHook extends BaseHook {
     protected void initializeIntent() {
     	Intent intent= new Intent();
         intent.setIntentName("yes_change_of_details");
-        intent.setAcknowledgeIntent(false);
+        intent.setAcknowledgeIntent(true);
+        intent.setAcknolwegementPrompt("Okay. ");
         List<Slot> slots= new ArrayList<>();
-        intent.setPreRequisites(new ArrayList<>());
-        intent.setIntentAlias("yes_change_of_details");
+        intent.setMandatorySlots(slots);
+
+
+        List<Prerequisite> preRequisites= new ArrayList<>();
+        Prerequisite prerequisite= new Prerequisite();
+        prerequisite.setIntentName("identification");
+        prerequisite.setLambdaCodeHookAlias("IdentificationCodeHook");
+        preRequisites.add(prerequisite);
+        intent.setPreRequisites(preRequisites);
+        intent.setIntentAlias("YesChangeOfDetailsCodeHook");
 
         this.setIntent(intent);
     }

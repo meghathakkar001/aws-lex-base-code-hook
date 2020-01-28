@@ -37,10 +37,20 @@ public class NoChangeOfDetailsHook extends BaseHook {
     protected void initializeIntent() {
     	Intent intent= new Intent();
         intent.setIntentName("no_change_of_details");
-        intent.setAcknowledgeIntent(false);
+        intent.setAcknowledgeIntent(true);
+        intent.setAcknolwegementPrompt("Okay. ");
         List<Slot> slots= new ArrayList<>();
-        intent.setPreRequisites(new ArrayList<>());
-        intent.setIntentAlias("no_change_of_details");
+
+        intent.setMandatorySlots(slots);
+
+        List<Prerequisite> preRequisites= new ArrayList<>();
+        Prerequisite prerequisite= new Prerequisite();
+        prerequisite.setIntentName("identification");
+        prerequisite.setLambdaCodeHookAlias("IdentificationCodeHook");
+        preRequisites.add(prerequisite);
+        intent.setPreRequisites(preRequisites);
+
+        intent.setIntentAlias("NoChangeOfDetailsCodeHook");
 
         this.setIntent(intent);
     }

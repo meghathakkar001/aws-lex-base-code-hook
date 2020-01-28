@@ -73,7 +73,7 @@ public abstract class BaseHook {
 					.get(mandatorySlot.getSlotName());
 			System.out.println(intent.getIntentName() + ": Slot value for "
 					+ mandatorySlot.getSlotName() + " is: " + slotValue);
-			if(!slotValue.equalsIgnoreCase("NONE")){
+			if(!StringUtils.isNullOrEmpty(slotValue)){
 				String functionName = getLambdaFunctionName(slotValue);
 				if(!StringUtils.isNullOrEmpty(functionName)){
 					lexResponse = switchIntent(request,functionName);
@@ -91,15 +91,14 @@ public abstract class BaseHook {
             request.getSessionAttributes().put("rfcCodeHookAlias",intent.getIntentAlias());
             System.out.println(intent.getIntentName()+" RFC set: "+rfc);
         }
-        
-        String acknowledgementPrompt=acknowledgeIntent(request);
+
         lexResponse= checkPrerequisites(request,context);
         if(lexResponse!=null){
             System.out.println(intent.getIntentName()+" Prerequisite response: "+lexResponse);
             return lexResponse;
         }
 
-        lexResponse= fillMandatorySlots(acknowledgementPrompt,request);
+        lexResponse= fillMandatorySlots(request);
         if(lexResponse!=null){
 
             System.out.println(intent.getIntentName()+" Slot filling response: "+lexResponse);
@@ -161,14 +160,18 @@ public abstract class BaseHook {
     }
 
 	private boolean isIntentDisamb(Intent intent) {
+
 		int slotSize = intent.getMandatorySlots().size();
+
 		if (slotSize == 1) {
 			Slot mandatorySlot = intent.getMandatorySlots().get(0);
 			String slotName = mandatorySlot.getSlotName();
-			if (slotName.startsWith("Disamb")) {
+			if (slotName.startsWith("Disamb") || slotName.startsWith("disamb")) {
 				return true;
 			}
 		}
+
+
 		return false;
 	}
 
@@ -261,8 +264,7 @@ public abstract class BaseHook {
 
 	protected abstract LexResponse fulfillIntent();
 
-	private LexResponse fillMandatorySlots(String acknowledgementPrompt,
-			LexEvent request) {
+	private LexResponse fillMandatorySlots(LexEvent request) {
 		for (Slot mandatorySlot : intent.getMandatorySlots()) {
 			String slotValue = request.getCurrentIntent().getSlots()
 					.get(mandatorySlot.getSlotName());
@@ -278,10 +280,9 @@ public abstract class BaseHook {
 				dialogAction.setSlotToElicit(mandatorySlot.getSlotName());
 				Message message = new Message();
 				message.setContentType("SSML");
-				message.setContent((acknowledgementPrompt != null) ? mandatorySlot
-						.getPrimaryPrompt() : mandatorySlot.getPrimaryPrompt());
+				String slotPrompt= getSlotPrompt(request,mandatorySlot);
+				message.setContent(slotPrompt);
 				dialogAction.setMessage(message);
-				request.getSessionAttributes().put("intentAcknowledged", "Yes");
 
 				lexResponse.setSessionAttributes(sessionAttributes);
 				lexResponse.setDialogAction(dialogAction);
@@ -289,6 +290,18 @@ public abstract class BaseHook {
 			}
 		}
 		return null;
+	}
+
+	private String getSlotPrompt(LexEvent request,Slot mandatorySlot) {
+		String acknowledgementPrompt=request.getSessionAttributes().get("acknowledgementPrompt");
+		String slotPrompt="<speak>";
+		System.out.println("Acknowledgement prompt is: "+acknowledgementPrompt);
+		slotPrompt+=(acknowledgementPrompt != null) ? acknowledgementPrompt+mandatorySlot
+				.getPrimaryPrompt() : mandatorySlot.getPrimaryPrompt();
+		slotPrompt+="</speak>";
+		request.getSessionAttributes().put("acknowledgementPrompt","");
+		System.out.println("Acknowledgement prompt is set to empty");
+		return slotPrompt;
 	}
 
 	protected LexResponse checkPrerequisites(LexEvent request, Context context) {
@@ -312,30 +325,16 @@ public abstract class BaseHook {
 		return null;
 	}
 
-	private String acknowledgeIntent(LexEvent request) {
-		String acknowledgementPrompt = request.getSessionAttributes().get(
-				"acknowledgementPrompt");
-		if (intent.isAcknowledgeIntent() && !intentAcknowledged) {
-			request.getSessionAttributes().put("acknowledgementPrompt",
-					intent.getAcknolwegementPrompt());
-			return intent.getAcknolwegementPrompt();
-		}
-		if (!StringUtils.isNullOrEmpty(acknowledgementPrompt)
-				&& !intentAcknowledged) {
-			return acknowledgementPrompt;
-		}
-		return null;
-	}
 
 	private boolean isRFCSet() {
 		return !StringUtils.isNullOrEmpty(rfc);
 	}
 
 	private void initialize(LexEvent request) {
+		initializeIntent();
 		setRFC(request);
 		setIntentsFulfilled(request);
 		setIntentAcknowledged(request);
-		initializeIntent();
 		initializeLambdaClient();
 
 	}
@@ -349,16 +348,22 @@ public abstract class BaseHook {
 	protected abstract void initializeIntent();
 
 	private void setIntentAcknowledged(LexEvent request) {
-		String intentAcknowledgedString = request.getSessionAttributes().get(
-				"intentAcknowledged");
+		String intentAcknowledgedString = request.getSessionAttributes().get(intent.getIntentName()+
+				"-intentAcknowledged");
+		boolean intentAcknowledged= "Yes".equals(intentAcknowledgedString);
+
 		String acknowledgeString = request.getSessionAttributes().get(
-				"acknowledgeString");
-		if (!StringUtils.isNullOrEmpty(intentAcknowledgedString)
-				&& ("Yes".equals(intentAcknowledgedString))) {
-			intentAcknowledged = true;
-			request.getSessionAttributes().put("intentAcknowledged", "Yes");
+				"acknowledgementPrompt");
+		if (acknowledgeString==null){
+			acknowledgeString="";
 		}
-		intentAcknowledged = false;
+		if (!intentAcknowledged && intent.isAcknowledgeIntent() ) {
+			request.getSessionAttributes().put("acknowledgementPrompt",acknowledgeString+intent.getAcknolwegementPrompt());
+			System.out.println("acknowledgementPrompt set to: "+request.getSessionAttributes().get("acknowledgementPrompt"));
+			request.getSessionAttributes().put(intent.getIntentName()+"-intentAcknowledged", "Yes");
+		}else {
+			System.out.println("Intent does not need to be acknowledged:"+ intent.getIntentName());
+		}
 	}
 
 	private void setIntentsFulfilled(LexEvent request) {
