@@ -73,7 +73,7 @@ public abstract class BaseHook {
 					.get(mandatorySlot.getSlotName());
 			System.out.println(intent.getIntentName() + ": Slot value for "
 					+ mandatorySlot.getSlotName() + " is: " + slotValue);
-			if(!slotValue.equalsIgnoreCase("NONE")){
+			if(StringUtils.isNullOrEmpty(slotValue)){
 				String functionName = getLambdaFunctionName(slotValue);
 				if(!StringUtils.isNullOrEmpty(functionName)){
 					lexResponse = switchIntent(request,functionName);
