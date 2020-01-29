@@ -65,7 +65,9 @@ public abstract class BaseHook {
         initialize(request);
 
         System.out.println(intent.getIntentName()+" invoked with request: "+request);
-        
+        if(IntentType.FURTHER_QUESTIONS.equals(intent.getIntentType())){
+            return buildElicitIntent(request,intent.getFurtherQuestion());
+        }
         boolean disambStatus = isIntentDisamb(intent);
         LexResponse lexResponse=null;
         if(disambStatus){
@@ -128,6 +130,34 @@ public abstract class BaseHook {
         return lexResponse;
 
     }
+	
+	private LexResponse buildElicitIntent(LexEvent request, String furtherQuestion) {
+        LexResponse lexResponse = new LexResponse();
+        Map<String, String> sessionAttributes = request.getSessionAttributes();
+        DialogAction dialogAction = new DialogAction();
+        dialogAction.setType("ElicitIntent");
+        Message message = new Message();
+        message.setContentType("SSML");
+        String intentPrompt= buildPrompt(request,furtherQuestion);
+        message.setContent(intentPrompt);
+        dialogAction.setMessage(message);
+
+        lexResponse.setSessionAttributes(sessionAttributes);
+        lexResponse.setDialogAction(dialogAction);
+        return lexResponse;
+
+    }
+
+    private String buildPrompt(LexEvent request, String furtherQuestion) {
+        String acknowledgementPrompt=request.getSessionAttributes().get("acknowledgementPrompt");
+        String slotPrompt="<speak>";
+        System.out.println("Acknowledgement prompt is: "+acknowledgementPrompt);
+        slotPrompt+=(acknowledgementPrompt != null) ? acknowledgementPrompt+furtherQuestion: furtherQuestion;
+        slotPrompt+="</speak>";
+        request.getSessionAttributes().put("acknowledgementPrompt","");
+        System.out.println("Acknowledgement prompt is set to empty");
+        return slotPrompt;
+    }
 
 	private String getLambdaFunctionName(String intentName) {
 		//JSON parser object to parse read file
@@ -162,16 +192,6 @@ public abstract class BaseHook {
 
 	private boolean isIntentDisamb(Intent intent) {
 		
-		
-		/*int slotSize = intent.getMandatorySlots().size();
-
-		if (slotSize == 1) {
-			Slot mandatorySlot = intent.getMandatorySlots().get(0);
-			String slotName = mandatorySlot.getSlotName();
-			if (slotName.startsWith("Disamb") || slotName.startsWith("disamb")) {
-				return true;
-			}
-		}*/
 		return intent.getIntentType()==IntentType.DISAMBIGUATION;
 	}
 
@@ -224,34 +244,6 @@ public abstract class BaseHook {
 		Map<String, String> sessionAttributes = request.getSessionAttributes();
 		if (!rfc.equals(intent.getIntentName())) {
 			return switchIntent(request,getLambdaFunctionName(rfc));
-			/*request.getCurrentIntent().setName(rfc);
-
-			final AmendBankDetailsCodeHook amendBankDetailsCodeHook = LambdaInvokerFactory
-					.builder()
-					.lambdaClient(AWSLambdaClientBuilder.defaultClient())
-					.functionAlias(rfcCodeHookAlias)
-					.build(AmendBankDetailsCodeHook.class);
-			return amendBankDetailsCodeHook.invokeHook(request);*/
-			/*
-			 * AmazonLexRuntime client =
-			 * AmazonLexRuntimeClientBuilder.defaultClient();
-			 * com.amazonaws.services.lexruntime.model.DialogAction dialogAction
-			 * = new
-			 * com.amazonaws.services.lexruntime.model.DialogAction().withIntentName
-			 * (rfc).withType(DialogActionType.ConfirmIntent).withMessage(
-			 * "DOES NT MATTER").withMessageFormat(MessageFormatType.PlainText);
-			 * PutSessionRequest putSessionRequest= new
-			 * PutSessionRequest().withBotName
-			 * ("ContactCenterBot").withBotAlias("$LATEST"
-			 * ).withUserId(request.getUserId
-			 * ()).withSessionAttributes(request.getSessionAttributes
-			 * ()).withDialogAction(dialogAction);
-			 * client.putSession(putSessionRequest);
-			 * System.out.println("PutSession is successful: "
-			 * +putSessionRequest);
-			 * System.out.println("PutSession to original rfc:"+rfc);
-			 */
-
 		}
 
 		System.out.println("No next action for intent:"
@@ -266,39 +258,64 @@ public abstract class BaseHook {
 
 	private LexResponse fillMandatorySlots(LexEvent request) {
 		for (Slot mandatorySlot : intent.getMandatorySlots()) {
+			if(request.getSessionAttributes().get(mandatorySlot.getSlotName()+ "Count")== null){
+				request.getSessionAttributes().put(mandatorySlot.getSlotName()+ "Count","0");
+			} else {
+				int count = Integer.parseInt(request.getSessionAttributes().get(mandatorySlot.getSlotName()+ "Count"));
+				request.getSessionAttributes().put(mandatorySlot.getSlotName()+ "Count",String.valueOf(++count));
+				System.out.println("NM/NI count " + count);	
+			}
 			String slotValue = request.getCurrentIntent().getSlots()
 					.get(mandatorySlot.getSlotName());
 			System.out.println(intent.getIntentName() + ": Slot value for "
 					+ mandatorySlot.getSlotName() + " is: " + slotValue);
 			if (StringUtils.isNullOrEmpty(slotValue)) {
-				LexResponse lexResponse = new LexResponse();
-				Map<String, String> sessionAttributes = request
-						.getSessionAttributes();
-				DialogAction dialogAction = new DialogAction();
-				dialogAction.setIntentName(intent.getIntentName());
-				dialogAction.setType("ElicitSlot");
-				dialogAction.setSlotToElicit(mandatorySlot.getSlotName());
-				Message message = new Message();
-				message.setContentType("SSML");
 				String slotPrompt= getSlotPrompt(request,mandatorySlot);
-				message.setContent(slotPrompt);
-				dialogAction.setMessage(message);
+				LexResponse lexResponse = new LexResponse();
+				if(!StringUtils.isNullOrEmpty(slotPrompt)){
+					
+					Map<String, String> sessionAttributes = request
+							.getSessionAttributes();
+					DialogAction dialogAction = new DialogAction();
+					dialogAction.setIntentName(intent.getIntentName());
+					dialogAction.setType("ElicitSlot");
+					dialogAction.setSlotToElicit(mandatorySlot.getSlotName());
+					Message message = new Message();
+					message.setContentType("SSML");
+					
+					message.setContent(slotPrompt);
+					dialogAction.setMessage(message);
 
-				lexResponse.setSessionAttributes(sessionAttributes);
-				lexResponse.setDialogAction(dialogAction);
+					lexResponse.setSessionAttributes(sessionAttributes);
+					lexResponse.setDialogAction(dialogAction);
+				} else{
+					lexResponse=finalRFCMessage();
+				}
+				
 				return lexResponse;
+			}else{
+				request.getSessionAttributes().remove(mandatorySlot.getSlotName()+ "Count");
 			}
 		}
 		return null;
 	}
 
 	private String getSlotPrompt(LexEvent request,Slot mandatorySlot) {
+		int count = Integer.parseInt(request.getSessionAttributes().get(mandatorySlot.getSlotName()+ "Count"));
 		String acknowledgementPrompt=request.getSessionAttributes().get("acknowledgementPrompt");
 		String slotPrompt="<speak>";
 		System.out.println("Acknowledgement prompt is: "+acknowledgementPrompt);
-		slotPrompt+=(acknowledgementPrompt != null) ? acknowledgementPrompt+mandatorySlot
-				.getPrimaryPrompt() : mandatorySlot.getPrimaryPrompt();
+		if(count==0){
+			slotPrompt+=(acknowledgementPrompt != null) ? acknowledgementPrompt+mandatorySlot
+					.getPrimaryPrompt() : mandatorySlot.getPrimaryPrompt();
+		}else if(count>0 && count<=mandatorySlot.getNoMatchPrompts().length ){
+			slotPrompt+=mandatorySlot.getNoMatchPrompts()[count-1];
+		} else{
+			return null;
+		}
+		
 		slotPrompt+="</speak>";
+		System.out.println("Slot prompt is : "+slotPrompt);
 		request.getSessionAttributes().put("acknowledgementPrompt","");
 		System.out.println("Acknowledgement prompt is set to empty");
 		return slotPrompt;
@@ -308,18 +325,7 @@ public abstract class BaseHook {
 		List<Prerequisite> preRequisites = intent.getPreRequisites();
 		for (Prerequisite preRequisiteIntent : preRequisites) {
 			if (!intentsFulfilled.contains(preRequisiteIntent.getIntentName())) {
-				
 				return switchIntent(request,preRequisiteIntent.getLambdaCodeHookAlias());
-				/*request.getCurrentIntent().setName(
-						preRequisiteIntent.getIntentName());
-				final IdentificationCodeHook identificationCodeHook = LambdaInvokerFactory
-						.builder()
-						.lambdaClient(AWSLambdaClientBuilder.defaultClient())
-						.functionAlias(
-								preRequisiteIntent.getLambdaCodeHookAlias())
-						.build(IdentificationCodeHook.class);
-				return identificationCodeHook.invokeHook(request);*/
-				
 			}
 		}
 		return null;

@@ -29,8 +29,12 @@ public class IdentificationHook extends BaseHook{
         List<Slot> slots= new ArrayList<>();
 
         Slot machineID= new Slot();
+        String[] noMatchPrompts = new String[2];
+        noMatchPrompts[0] = "Sorry I didn't catch that, Please say or enter your Merchant or Terminal ID";
+        noMatchPrompts[1] = "Sorry I didn't catch that, Please say or tap in your Merchant or Terminal ID";
+        machineID.setNoMatchPrompts(noMatchPrompts);
         machineID.setSlotName("midtid");
-        machineID.setPrimaryPrompt("For identification, please tell me your machine I.D.");
+        machineID.setPrimaryPrompt("For identification, please tell me your merchant I.D.");
         slots.add(machineID);
         intent.setMandatorySlots(slots);
         intent.setPreRequisites(new ArrayList<>());
