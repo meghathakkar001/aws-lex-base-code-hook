@@ -3,48 +3,98 @@
 		"slot_list" : ["midtid"],
 		"prerequisites" : null,
 		"lambda_function_name" : "IdentificationCodeHook",
-		"fq_prompt" : null
+		"fq_prompt" : null,
+		"intent_type" : "default"
 	},
 	"amend_bank_details" : {
 		"slot_list" : [],
 		"prerequisites" : "identification",
 		"lambda_function_name" : "AmendBankDetailsCodeHook",
-		"fq_prompt" : null
+		"fq_prompt" : null,
+		"intent_type" : "default"
 	},
 	"amend_legal_entity" : {
 		"slot_list" : [],
 		"prerequisites" : "identification",
 		"lambda_function_name" : "AmendLegalEntityCodeHook",
-		"fq_prompt" : null
+		"fq_prompt" : null,
+		"intent_type" : "default"
 	},
 	"amend_merchant_name" : {
 		"slot_list" : ["disamb_yn_changeofdetails"],
 		"prerequisites" : null,
 		"lambda_function_name" : "AmendMerchNameCodeHook",
-		"fq_prompt" : null
+		"fq_prompt" : null,
+		"intent_type" : "disamb"
 	},
 	"query_speak_to_agent" : {
 		"slot_list" : [],
 		"prerequisites" : "identification",
 		"lambda_function_name" : "SpeakToAgentCodeHook",
-		"fq_prompt" : "Please elaborate more on why do you want to speak to an agent ?"
+		"fq_prompt" : "Please elaborate more on why do you want to speak to an agent ?",
+		"intent_type" : "default"
 	},
 	"yes_change_of_details" : {
 		"slot_list" : [],
 		"prerequisites" : "identification",
 		"lambda_function_name" : "YesChangeOfDetailsCodeHook",
-		"fq_prompt" : null
+		"fq_prompt" : null,
+		"intent_type" : "default"
 	},
 	"no_change_of_details" : {
 		"slot_list" : [],
 		"prerequisites" : "identification",
 		"lambda_function_name" : "NoChangeOfDetailsCodeHook",
-		"fq_prompt" : null
+		"fq_prompt" : null,
+		"intent_type" : "default"
 	},
 	"not_sure_change_of_details" : {
 		"slot_list" : [],
 		"prerequisites" : "identification",
 		"lambda_function_name" : "NotSureChangeOfDetailsCodeHook",
-		"fq_prompt" : null
+		"fq_prompt" : null,
+		"intent_type" : "default"
+	},
+	"tech_query_connection" : {
+		"slot_list" : ["disamb_menu_conn_machinetype"],
+		"prerequisites" : null,
+		"lambda_function_name" : "TechQueryConnCodeHook",
+		"fq_prompt" : null,
+		"intent_type" : "disamb"
+	},
+	"tech_query_printing_mobile" : {
+		"slot_list" : ["disamb_menu_conn_conntype"],
+		"prerequisites" : null,
+		"lambda_function_name" : "TechQueryPrintingMobCodeHook",
+		"fq_prompt" : null,
+		"intent_type" : "disamb"
+	},
+	"tech_query_printing_desktop" : {
+		"slot_list" : ["disamb_menu_conn_conntype"],
+		"prerequisites" : null,
+		"lambda_function_name" : "TechQueryPrintingDesktopCodeHook",
+		"fq_prompt" : null,
+		"intent_type" : "disamb"
+	},
+	"tech_query_printing_portable" : {
+		"slot_list" : ["disamb_menu_conn_conntype"],
+		"prerequisites" : null,
+		"lambda_function_name" : "TechQueryPrintingPortableCodeHook",
+		"fq_prompt" : null,
+		"intent_type" : "disamb"
+	},
+	"tech_query_connection_phoneline" : {
+		"slot_list" : [],
+		"prerequisites" : "identification",
+		"lambda_function_name" : "TechQueryConnPhoneLineCodeHook",
+		"fq_prompt" : null,
+		"intent_type" : "default"
+	},
+	"tech_query_connection_broadband" : {
+		"slot_list" : [],
+		"prerequisites" : "identification",
+		"lambda_function_name" : "TechQueryConnBroadbandCodeHook",
+		"fq_prompt" : null,
+		"intent_type" : "default"
 	}
 }

@@ -23,6 +23,7 @@ import com.amazonaws.services.lambda.runtime.events.LexEvent;
 import com.amazonaws.util.StringUtils;
 import com.bank.ivr.model.DialogAction;
 import com.bank.ivr.model.Intent;
+import com.bank.ivr.model.Intent.IntentType;
 import com.bank.ivr.model.LexResponse;
 import com.bank.ivr.model.Message;
 import com.bank.ivr.model.Prerequisite;
@@ -160,8 +161,9 @@ public abstract class BaseHook {
     }
 
 	private boolean isIntentDisamb(Intent intent) {
-
-		int slotSize = intent.getMandatorySlots().size();
+		
+		
+		/*int slotSize = intent.getMandatorySlots().size();
 
 		if (slotSize == 1) {
 			Slot mandatorySlot = intent.getMandatorySlots().get(0);
@@ -169,8 +171,8 @@ public abstract class BaseHook {
 			if (slotName.startsWith("Disamb") || slotName.startsWith("disamb")) {
 				return true;
 			}
-		}
-		return false;
+		}*/
+		return intent.getIntentType()==IntentType.DISAMBIGUATION;
 	}
 
 	private LexResponse switchIntent(LexEvent request,String functionName){

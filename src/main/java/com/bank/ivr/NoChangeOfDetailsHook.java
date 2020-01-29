@@ -9,6 +9,7 @@ import com.bank.ivr.model.LexResponse;
 import com.bank.ivr.model.Message;
 import com.bank.ivr.model.Prerequisite;
 import com.bank.ivr.model.Slot;
+import com.bank.ivr.model.Intent.IntentType;
 
 public class NoChangeOfDetailsHook extends BaseHook {
 	@Override
@@ -39,6 +40,7 @@ public class NoChangeOfDetailsHook extends BaseHook {
         intent.setIntentName("no_change_of_details");
         intent.setAcknowledgeIntent(true);
         intent.setAcknolwegementPrompt("Okay. ");
+        intent.setIntentType(IntentType.DEFAULT);
         List<Slot> slots= new ArrayList<>();
         intent.setMandatorySlots(slots);
         intent.setPreRequisites(new ArrayList<>());

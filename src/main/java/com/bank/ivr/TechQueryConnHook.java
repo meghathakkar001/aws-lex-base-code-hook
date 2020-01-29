@@ -5,13 +5,13 @@ import java.util.List;
 
 import com.bank.ivr.model.DialogAction;
 import com.bank.ivr.model.Intent;
+import com.bank.ivr.model.Intent.IntentType;
 import com.bank.ivr.model.LexResponse;
 import com.bank.ivr.model.Message;
 import com.bank.ivr.model.Prerequisite;
 import com.bank.ivr.model.Slot;
-import com.bank.ivr.model.Intent.IntentType;
 
-public class YesChangeOfDetailsHook extends BaseHook {
+public class TechQueryConnHook extends BaseHook {
 	@Override
     protected LexResponse finalRFCMessage() {
         DialogAction dialogAction= new DialogAction();
@@ -19,7 +19,7 @@ public class YesChangeOfDetailsHook extends BaseHook {
         dialogAction.setType("Close");
         Message message= new Message();
 
-        message.setContent("<speak>Thanks. Transferring you to an agent who can help with this</speak>");
+        message.setContent("Thanks. Transferring you to an agent who can help with this");
         message.setContentType("SSML");
         dialogAction.setMessage(message);
         //dialogAction.setSlots(intent.get);
@@ -37,21 +37,19 @@ public class YesChangeOfDetailsHook extends BaseHook {
     @Override
     protected void initializeIntent() {
     	Intent intent= new Intent();
-        intent.setIntentName("yes_change_of_details");
+        intent.setIntentName("tech_query_connection");
         intent.setAcknowledgeIntent(true);
-        intent.setAcknolwegementPrompt("Okay. ");
-        intent.setIntentType(IntentType.DEFAULT);
+        intent.setAcknolwegementPrompt("Okay. About a connection issue");
+        intent.setIntentType(IntentType.DISAMBIGUATION);
         List<Slot> slots= new ArrayList<>();
         intent.setMandatorySlots(slots);
+        Slot machineID= new Slot();
+        machineID.setSlotName("disamb_menu_conn_machinetype");
+        machineID.setPrimaryPrompt("What type of machine do you have?");
+        slots.add(machineID);
+        intent.setMandatorySlots(slots);
         intent.setPreRequisites(new ArrayList<>());
-        intent.setIntentAlias("yes_change_of_details");
-        List<Prerequisite> preRequisites= new ArrayList<>();
-        Prerequisite prerequisite= new Prerequisite();
-        prerequisite.setIntentName("identification");
-        prerequisite.setLambdaCodeHookAlias("IdentificationCodeHook");
-        preRequisites.add(prerequisite);
-        intent.setPreRequisites(preRequisites);
-
+        intent.setIntentAlias("tech_query_connection");
 
         this.setIntent(intent);
     }

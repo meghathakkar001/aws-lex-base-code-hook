@@ -3,6 +3,7 @@ package com.bank.ivr;
 import com.bank.ivr.model.Intent;
 import com.bank.ivr.model.LexResponse;
 import com.bank.ivr.model.Slot;
+import com.bank.ivr.model.Intent.IntentType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class IdentificationHook extends BaseHook{
         Intent intent= new Intent();
         intent.setIntentName("identification");
         intent.setAcknowledgeIntent(false);
+        intent.setIntentType(IntentType.DEFAULT);
         List<Slot> slots= new ArrayList<>();
 
         Slot machineID= new Slot();

@@ -1,6 +1,7 @@
 package com.bank.ivr;
 
 import com.bank.ivr.model.*;
+import com.bank.ivr.model.Intent.IntentType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class AmendBankDetailsHook extends BaseHook{
         intent.setAcknowledgeIntent(true);
         intent.setMandatorySlots(new ArrayList<Slot>());
         intent.setAcknolwegementPrompt("Okay. Amend Bank Details.");
-
+        intent.setIntentType(IntentType.DEFAULT);
         List<Prerequisite> preRequisites= new ArrayList<>();
         Prerequisite prerequisite= new Prerequisite();
         prerequisite.setIntentName("identification");

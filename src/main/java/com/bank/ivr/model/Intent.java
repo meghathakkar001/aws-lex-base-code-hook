@@ -78,7 +78,7 @@ public class Intent {
     private List<Slot> mandatorySlots;
     private List<Slot> optionalSlots;
 
-    enum IntentType {
+    public enum IntentType {
         DEFAULT,DISAMBIGUATION,FURTHER_QUESTIONS
     }
     enum FulfillmentType {

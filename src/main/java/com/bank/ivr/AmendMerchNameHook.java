@@ -9,6 +9,7 @@ import com.bank.ivr.model.LexResponse;
 import com.bank.ivr.model.Message;
 import com.bank.ivr.model.Prerequisite;
 import com.bank.ivr.model.Slot;
+import com.bank.ivr.model.Intent.IntentType;
 
 public class AmendMerchNameHook extends BaseHook {
 	@Override
@@ -39,6 +40,7 @@ public class AmendMerchNameHook extends BaseHook {
         intent.setIntentName("amend_merchant_name");
         intent.setAcknowledgeIntent(true);
         intent.setAcknolwegementPrompt("Okay. amend the merchant name. ");
+        intent.setIntentType(IntentType.DISAMBIGUATION);
         List<Slot> slots= new ArrayList<>();
         intent.setMandatorySlots(slots);
         Slot machineID= new Slot();
