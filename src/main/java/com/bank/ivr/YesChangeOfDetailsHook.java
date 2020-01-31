@@ -1,13 +1,18 @@
 package com.bank.ivr;
 
-import com.bank.ivr.model.*;
-import com.bank.ivr.model.Intent.IntentType;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class AmendBankDetailsHook extends BaseHook{
-    @Override
+import com.bank.ivr.model.DialogAction;
+import com.bank.ivr.model.Intent;
+import com.bank.ivr.model.LexResponse;
+import com.bank.ivr.model.Message;
+import com.bank.ivr.model.Prerequisite;
+import com.bank.ivr.model.Slot;
+import com.bank.ivr.model.Intent.IntentType;
+
+public class YesChangeOfDetailsHook extends BaseHook {
+	@Override
     protected LexResponse finalRFCMessage() {
         DialogAction dialogAction= new DialogAction();
         dialogAction.setFulfillmentState("Fulfilled");
@@ -31,21 +36,24 @@ public class AmendBankDetailsHook extends BaseHook{
 
     @Override
     protected void initializeIntent() {
-        Intent intent= new Intent();
-        intent.setIntentName("amend_bank_details");
+    	Intent intent= new Intent();
+        intent.setIntentName("yes_change_of_details");
         intent.setAcknowledgeIntent(true);
-        intent.setMandatorySlots(new ArrayList<Slot>());
-        intent.setAcknolwegementPrompt("Okay. Amend Bank Details.");
+        intent.setAcknolwegementPrompt("Okay. ");
         intent.setIntentType(IntentType.DEFAULT);
+        List<Slot> slots= new ArrayList<>();
+        intent.setMandatorySlots(slots);
+        intent.setPreRequisites(new ArrayList<>());
+        intent.setIntentAlias("yes_change_of_details");
         List<Prerequisite> preRequisites= new ArrayList<>();
         Prerequisite prerequisite= new Prerequisite();
         prerequisite.setIntentName("identification");
         prerequisite.setLambdaCodeHookAlias("IdentificationCodeHook");
         preRequisites.add(prerequisite);
         intent.setPreRequisites(preRequisites);
-        intent.setIntentAlias("AmendBankDetails");
+
 
         this.setIntent(intent);
     }
-    
+
 }

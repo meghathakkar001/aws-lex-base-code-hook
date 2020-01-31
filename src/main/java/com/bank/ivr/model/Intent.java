@@ -6,6 +6,22 @@ public class Intent {
 
     private String intentName;
     private String intentAlias;
+    private List<Prerequisite> preRequisites;
+    private IntentType intentType;
+    private boolean acknowledgeIntent;
+    private String acknolwegementPrompt;
+    private List<Slot> mandatorySlots;
+    private List<Slot> optionalSlots;
+    private String furtherQuestion;
+
+    public String getFurtherQuestion() {
+        return furtherQuestion;
+    }
+
+    public void setFurtherQuestion(String furtherQuestion) {
+        this.furtherQuestion = furtherQuestion;
+    }
+
     public List<Prerequisite> getPreRequisites() {
         return preRequisites;
     }
@@ -42,8 +58,8 @@ public class Intent {
         return acknolwegementPrompt;
     }
 
-    public void setAcknolwegementPrompt(String acknolwegementPrompt) {
-        this.acknolwegementPrompt = acknolwegementPrompt;
+    public void setAcknolwegementPrompt(String acknowledgementPrompt) {
+        this.acknolwegementPrompt = acknowledgementPrompt;
     }
 
     public List<Slot> getMandatorySlots() {
@@ -62,11 +78,6 @@ public class Intent {
         this.optionalSlots = optionalSlots;
     }
 
-    private List<Prerequisite> preRequisites;
-    private IntentType intentType;
-    private boolean acknowledgeIntent;
-    private String acknolwegementPrompt;
-
     public String getIntentName() {
         return intentName;
     }
@@ -75,10 +86,8 @@ public class Intent {
         this.intentName = intentName;
     }
 
-    private List<Slot> mandatorySlots;
-    private List<Slot> optionalSlots;
 
-    enum IntentType {
+    public enum IntentType {
         DEFAULT,DISAMBIGUATION,FURTHER_QUESTIONS
     }
     enum FulfillmentType {

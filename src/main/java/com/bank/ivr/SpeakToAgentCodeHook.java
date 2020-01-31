@@ -6,15 +6,17 @@ import com.bank.ivr.model.Intent.IntentType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AmendBankDetailsHook extends BaseHook{
-    @Override
+public class SpeakToAgentCodeHook extends BaseHook {
+	@Override
     protected LexResponse finalRFCMessage() {
+	    //This will never get called
+
         DialogAction dialogAction= new DialogAction();
         dialogAction.setFulfillmentState("Fulfilled");
         dialogAction.setType("Close");
         Message message= new Message();
 
-        message.setContent("<speak>Thanks. Transferring you to an agent who can help with this</speak>");
+        message.setContent("Thanks. Transferring you to an agent who can help with this");
         message.setContentType("SSML");
         dialogAction.setMessage(message);
         //dialogAction.setSlots(intent.get);
@@ -31,21 +33,18 @@ public class AmendBankDetailsHook extends BaseHook{
 
     @Override
     protected void initializeIntent() {
-        Intent intent= new Intent();
-        intent.setIntentName("amend_bank_details");
+    	Intent intent= new Intent();
+        intent.setIntentName("query_speak_to_agent");
         intent.setAcknowledgeIntent(true);
-        intent.setMandatorySlots(new ArrayList<Slot>());
-        intent.setAcknolwegementPrompt("Okay. Amend Bank Details.");
-        intent.setIntentType(IntentType.DEFAULT);
-        List<Prerequisite> preRequisites= new ArrayList<>();
-        Prerequisite prerequisite= new Prerequisite();
-        prerequisite.setIntentName("identification");
-        prerequisite.setLambdaCodeHookAlias("IdentificationCodeHook");
-        preRequisites.add(prerequisite);
-        intent.setPreRequisites(preRequisites);
-        intent.setIntentAlias("AmendBankDetails");
+        intent.setAcknolwegementPrompt("Okay. Speak to agent.");
+        intent.setIntentType(IntentType.FURTHER_QUESTIONS);
+        intent.setFurtherQuestion("What is it you would like to speak about? You can say things like amend bank details or my business name has changed");
+        List<Slot> slots= new ArrayList<>();
+        intent.setMandatorySlots(slots);
+        intent.setPreRequisites(new ArrayList<>());
+        intent.setIntentAlias("query_speak_to_agent");
 
         this.setIntent(intent);
     }
-    
+
 }
