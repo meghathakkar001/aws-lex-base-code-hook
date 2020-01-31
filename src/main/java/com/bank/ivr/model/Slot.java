@@ -1,5 +1,7 @@
 package com.bank.ivr.model;
 
+import java.util.Arrays;
+
 public class Slot {
 
     private String slotName;
@@ -46,6 +48,17 @@ public class Slot {
 
     public void setNoMatchPrompts(String[] noMatchPrompts) {
         this.noMatchPrompts = noMatchPrompts;
+    }
+
+    @Override
+    public String toString() {
+        return "Slot{" +
+                "slotName='" + slotName + '\'' +
+                ", slotType='" + slotType + '\'' +
+                ", primaryPrompt='" + primaryPrompt + '\'' +
+                ", noInputPrompts=" + Arrays.toString(noInputPrompts) +
+                ", noMatchPrompts=" + Arrays.toString(noMatchPrompts) +
+                '}';
     }
 
     public static final class SlotBuilder {

@@ -1,0 +1,12 @@
+{
+    "intentName":"yes_change_of_details",
+    "intentFunction":"YesChangeOfDetailsCodeHook",
+    "preRequisites":[{"intentName":"identification","lambdaCodeHookAlias":"IdentificationCodeHook"}],
+    "intentType":"DEFAULT",
+    "acknowledgeIntent":true,
+    "acknowledgementPrompt":"Okay. ",
+    "mandatorySlots":[],
+    "optionalSlots":[],
+    "furtherQuestion":""
+
+}

@@ -1,0 +1,12 @@
+{
+    "intentName":"amend_bank_details",
+    "intentFunction":"AmendBankDetailsCodeHook",
+    "preRequisites":[{"intentName":"identification","lambdaCodeHookAlias":"IdentificationCodeHook"}],
+    "intentType":"DEFAULT",
+    "acknowledgeIntent":true,
+    "acknowledgementPrompt":"Okay. Amend Bank Details.",
+    "mandatorySlots":[],
+    "optionalSlots":[],
+    "furtherQuestion":""
+
+}

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -87,11 +88,11 @@ public abstract class BaseHook {
 				}
 			}
         }
-        
+
         if(!isRFCSet() && !disambStatus){
             rfc=this.intent.getIntentName();
             request.getSessionAttributes().put("rfc",rfc);
-            request.getSessionAttributes().put("rfcCodeHookAlias",intent.getIntentAlias());
+            request.getSessionAttributes().put("rfcCodeHookAlias",intent.getIntentFunction());
             System.out.println(intent.getIntentName()+" RFC set: "+rfc);
         }
 
@@ -130,7 +131,7 @@ public abstract class BaseHook {
         return lexResponse;
 
     }
-	
+
 	private LexResponse buildElicitIntent(LexEvent request, String furtherQuestion) {
         LexResponse lexResponse = new LexResponse();
         Map<String, String> sessionAttributes = request.getSessionAttributes();
@@ -191,7 +192,7 @@ public abstract class BaseHook {
     }
 
 	private boolean isIntentDisamb(Intent intent) {
-		
+
 		return intent.getIntentType()==IntentType.DISAMBIGUATION;
 	}
 
@@ -263,7 +264,7 @@ public abstract class BaseHook {
 			} else {
 				int count = Integer.parseInt(request.getSessionAttributes().get(mandatorySlot.getSlotName()+ "Count"));
 				request.getSessionAttributes().put(mandatorySlot.getSlotName()+ "Count",String.valueOf(++count));
-				System.out.println("NM/NI count " + count);	
+				System.out.println("NM/NI count " + count);
 			}
 			String slotValue = request.getCurrentIntent().getSlots()
 					.get(mandatorySlot.getSlotName());
@@ -273,7 +274,7 @@ public abstract class BaseHook {
 				String slotPrompt= getSlotPrompt(request,mandatorySlot);
 				LexResponse lexResponse = new LexResponse();
 				if(!StringUtils.isNullOrEmpty(slotPrompt)){
-					
+
 					Map<String, String> sessionAttributes = request
 							.getSessionAttributes();
 					DialogAction dialogAction = new DialogAction();
@@ -282,7 +283,7 @@ public abstract class BaseHook {
 					dialogAction.setSlotToElicit(mandatorySlot.getSlotName());
 					Message message = new Message();
 					message.setContentType("SSML");
-					
+
 					message.setContent(slotPrompt);
 					dialogAction.setMessage(message);
 
@@ -291,7 +292,7 @@ public abstract class BaseHook {
 				} else{
 					lexResponse=finalRFCMessage();
 				}
-				
+
 				return lexResponse;
 			}else{
 				request.getSessionAttributes().remove(mandatorySlot.getSlotName()+ "Count");
@@ -313,7 +314,7 @@ public abstract class BaseHook {
 		} else{
 			return null;
 		}
-		
+
 		slotPrompt+="</speak>";
 		System.out.println("Slot prompt is : "+slotPrompt);
 		request.getSessionAttributes().put("acknowledgementPrompt","");
@@ -337,7 +338,7 @@ public abstract class BaseHook {
 	}
 
 	private void initialize(LexEvent request) {
-		initializeIntent();
+		initializeIntentBase();
 		setRFC(request);
 		setIntentsFulfilled(request);
 		setIntentAcknowledged(request);
@@ -351,7 +352,38 @@ public abstract class BaseHook {
 
 	}
 
-	protected abstract void initializeIntent();
+	protected abstract void initializeIntentHook();
+
+
+	protected void initializeIntentBase() {
+		ObjectMapper objectMapper= new ObjectMapper();
+		S3Downloader downloader= new S3Downloader();
+		String configBucket=System.getenv("configBucket");
+		String key=System.getenv("key");
+		try {
+			Intent intent=objectMapper.readValue(downloader.download(key,configBucket),Intent.class);
+			this.setIntent(intent);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Error occurred while initializing intent",e);
+		}
+		/*
+		try{
+			ClassLoader loader = this.getClass().getClassLoader();
+			URL url = loader.getResource(System.getenv("intentConfig"));
+			Intent intent= objectMapper.readValue(url, Intent.class);
+
+			this.setIntent(intent);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Could not initialize intent from intentConfig",e);
+		}
+		*/
+
+		initializeIntentHook();
+
+	}
 
 	private void setIntentAcknowledged(LexEvent request) {
 		String intentAcknowledgedString = request.getSessionAttributes().get(intent.getIntentName()+

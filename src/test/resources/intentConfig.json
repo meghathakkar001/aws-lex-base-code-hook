@@ -1,0 +1,21 @@
+{
+    "intentName":"identification",
+    "intentFunction":"IdentificationCodeHook",
+    "preRequisites":[],
+    "intentType":"DEFAULT",
+    "acknowledgeIntent":false,
+    "acknowledgementPrompt":"",
+    "mandatorySlots":[
+      {
+        "slotName":"midtid",
+        "slotType":"AMAZON.NUMBER",
+        "primaryPrompt":"For identification, Please say or enter your eight digit Terminal I D, or say I don't know it",
+        "noInputPrompts":["Sorry I did'nt catch that, please say or enter for Merchant or Terminal I D or say I do'nt know it", "Say or enter your Merchant or Terminal ID or say, I don't know it"],
+        "noMatchPrompts":["Sorry I did'nt catch that, please say or enter for Merchant or Terminal I D or say I do'nt know it", "Say or enter your Merchant or Terminal ID or say, I don't know it"]
+      }
+    ],
+    "optionalSlots":[
+    ],
+    "furtherQuestion":""
+
+}

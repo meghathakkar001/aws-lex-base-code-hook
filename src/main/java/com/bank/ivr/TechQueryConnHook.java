@@ -8,7 +8,6 @@ import com.bank.ivr.model.Intent;
 import com.bank.ivr.model.Intent.IntentType;
 import com.bank.ivr.model.LexResponse;
 import com.bank.ivr.model.Message;
-import com.bank.ivr.model.Prerequisite;
 import com.bank.ivr.model.Slot;
 
 public class TechQueryConnHook extends BaseHook {
@@ -35,11 +34,11 @@ public class TechQueryConnHook extends BaseHook {
     }
 
     @Override
-    protected void initializeIntent() {
+    protected void initializeIntentHook() {
     	Intent intent= new Intent();
         intent.setIntentName("tech_query_connection");
         intent.setAcknowledgeIntent(true);
-        intent.setAcknolwegementPrompt("Okay. About a connection issue");
+        intent.setAcknowledgementPrompt("Okay. About a connection issue");
         intent.setIntentType(IntentType.DISAMBIGUATION);
         List<Slot> slots= new ArrayList<>();
         intent.setMandatorySlots(slots);
@@ -49,7 +48,7 @@ public class TechQueryConnHook extends BaseHook {
         slots.add(machineID);
         intent.setMandatorySlots(slots);
         intent.setPreRequisites(new ArrayList<>());
-        intent.setIntentAlias("tech_query_connection");
+        intent.setIntentFunction("tech_query_connection");
 
         this.setIntent(intent);
     }

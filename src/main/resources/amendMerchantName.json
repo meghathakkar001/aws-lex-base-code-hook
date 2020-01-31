@@ -1,0 +1,20 @@
+{
+    "intentName":"amend_merchant_name",
+    "intentFunction":"AmendMerchNameCodeHook",
+    "preRequisites":[],
+    "intentType":"DISAMBIGUATION",
+    "acknowledgeIntent":true,
+    "acknowledgementPrompt":"Okay. amend the merchant name. ",
+    "mandatorySlots":[
+        {
+            "slotName":"disamb_yn_changeofdetails",
+            "slotType":"disamb_yn_changeofdetails",
+            "primaryPrompt":"Have any of your business details changed with companies house recently?",
+            "noInputPrompts":["Sorry I did'nt catch that, please say yes or no", "Have any of your business details changed with companies house recently?"],
+            "noMatchPrompts":["Sorry I did'nt catch that, please say yes or no", "Have any of your business details changed with companies house recently"]
+        }
+    ],
+    "optionalSlots":[],
+    "furtherQuestion":""
+
+}

@@ -35,16 +35,16 @@ public class TechQueryConnPhoneLineHook extends BaseHook {
     }
 
     @Override
-    protected void initializeIntent() {
+    protected void initializeIntentHook() {
     	Intent intent= new Intent();
         intent.setIntentName("tech_query_connection_phoneline");
         intent.setAcknowledgeIntent(true);
-        intent.setAcknolwegementPrompt("Okay.");
+        intent.setAcknowledgementPrompt("Okay.");
         intent.setIntentType(IntentType.DEFAULT);
         List<Slot> slots= new ArrayList<>();
         intent.setMandatorySlots(slots);
         intent.setPreRequisites(new ArrayList<>());
-        intent.setIntentAlias("tech_query_connection_phoneline");
+        intent.setIntentFunction("tech_query_connection_phoneline");
         List<Prerequisite> preRequisites= new ArrayList<>();
         Prerequisite prerequisite= new Prerequisite();
         prerequisite.setIntentName("identification");

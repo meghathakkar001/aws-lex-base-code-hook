@@ -1,0 +1,12 @@
+{
+    "intentName":"query_speak_to_agent",
+    "intentFunction":"AmendBankDetailsCodeHook",
+    "preRequisites":[],
+    "intentType":"FURTHER_QUESTIONS",
+    "acknowledgeIntent":true,
+    "acknowledgementPrompt":"Okay. Speak to agent.",
+    "mandatorySlots":[],
+    "optionalSlots":[],
+    "furtherQuestion":"What is it you would like to speak about? You can say things like amend bank details or my business name has changed"
+
+}

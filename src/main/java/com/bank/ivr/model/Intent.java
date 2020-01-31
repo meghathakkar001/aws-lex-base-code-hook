@@ -42,12 +42,12 @@ public class Intent {
         return acknowledgeIntent;
     }
 
-    public String getIntentAlias() {
-        return intentAlias;
+    public String getIntentFunction() {
+        return intentFunction;
     }
 
-    public void setIntentAlias(String intentAlias) {
-        this.intentAlias = intentAlias;
+    public void setIntentFunction(String intentFunction) {
+        this.intentFunction = intentFunction;
     }
 
     public void setAcknowledgeIntent(boolean acknowledgeIntent) {
@@ -78,12 +78,32 @@ public class Intent {
         this.optionalSlots = optionalSlots;
     }
 
+    private List<Prerequisite> preRequisites;
+    private IntentType intentType;
+    private boolean acknowledgeIntent;
+    private String acknolwegementPrompt;
+
     public String getIntentName() {
         return intentName;
     }
 
     public void setIntentName(String intentName) {
         this.intentName = intentName;
+    }
+
+    @Override
+    public String toString() {
+        return "Intent{" +
+                "intentName='" + intentName + '\'' +
+                ", intentFunction='" + intentFunction + '\'' +
+                ", preRequisites=" + preRequisites +
+                ", intentType=" + intentType +
+                ", acknowledgeIntent=" + acknowledgeIntent +
+                ", acknowledgementPrompt='" + acknowledgementPrompt + '\'' +
+                ", mandatorySlots=" + mandatorySlots +
+                ", optionalSlots=" + optionalSlots +
+                ", furtherQuestion='" + furtherQuestion + '\'' +
+                '}';
     }
 
 
@@ -96,7 +116,7 @@ public class Intent {
 
     public static final class IntentBuilder {
         private String intentName;
-        private String intentAlias;
+        private String intentFunction;
         private List<Prerequisite> preRequisites;
         private IntentType intentType;
         private boolean acknowledgeIntent;
@@ -117,7 +137,7 @@ public class Intent {
         }
 
         public IntentBuilder withIntentAlias(String intentAlias) {
-            this.intentAlias = intentAlias;
+            this.intentFunction = intentAlias;
             return this;
         }
 
@@ -160,7 +180,7 @@ public class Intent {
             intent.setAcknolwegementPrompt(acknolwegementPrompt);
             intent.setMandatorySlots(mandatorySlots);
             intent.setOptionalSlots(optionalSlots);
-            intent.intentAlias = this.intentAlias;
+            intent.intentFunction = this.intentFunction;
             return intent;
         }
     }
