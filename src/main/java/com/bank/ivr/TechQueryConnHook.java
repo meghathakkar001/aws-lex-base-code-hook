@@ -35,6 +35,7 @@ public class TechQueryConnHook extends BaseHook {
 
     @Override
     protected void initializeIntentHook() {
+    	/*
     	Intent intent= new Intent();
         intent.setIntentName("tech_query_connection");
         intent.setAcknowledgeIntent(true);
@@ -51,6 +52,7 @@ public class TechQueryConnHook extends BaseHook {
         intent.setIntentFunction("tech_query_connection");
 
         this.setIntent(intent);
+        */
     }
 
 }

@@ -14,6 +14,7 @@ import com.bank.ivr.model.Intent.IntentType;
 public class TechQueryConnPhoneLineHook extends BaseHook {
 	@Override
     protected LexResponse finalRFCMessage() {
+
         DialogAction dialogAction= new DialogAction();
         dialogAction.setFulfillmentState("Fulfilled");
         dialogAction.setType("Close");
@@ -36,7 +37,8 @@ public class TechQueryConnPhoneLineHook extends BaseHook {
 
     @Override
     protected void initializeIntentHook() {
-    	Intent intent= new Intent();
+    	/*
+	    Intent intent= new Intent();
         intent.setIntentName("tech_query_connection_phoneline");
         intent.setAcknowledgeIntent(true);
         intent.setAcknowledgementPrompt("Okay.");
@@ -54,6 +56,7 @@ public class TechQueryConnPhoneLineHook extends BaseHook {
 
 
         this.setIntent(intent);
+        */
     }
 
 }

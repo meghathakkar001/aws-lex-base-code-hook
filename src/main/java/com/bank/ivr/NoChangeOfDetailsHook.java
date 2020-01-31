@@ -36,6 +36,7 @@ public class NoChangeOfDetailsHook extends BaseHook {
 
     @Override
     protected void initializeIntentHook() {
+	    /*
     	Intent intent= new Intent();
         intent.setIntentName("no_change_of_details");
         intent.setAcknowledgeIntent(true);
@@ -52,6 +53,7 @@ public class NoChangeOfDetailsHook extends BaseHook {
         preRequisites.add(prerequisite);
         intent.setPreRequisites(preRequisites);
         this.setIntent(intent);
+        */
     }
 
 }

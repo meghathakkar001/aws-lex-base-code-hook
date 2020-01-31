@@ -35,6 +35,7 @@ public class TechQueryPrintingMobHook extends BaseHook {
 
     @Override
     protected void initializeIntentHook() {
+	    /*
     	Intent intent= new Intent();
         intent.setIntentName("tech_query_printing_mobile");
         intent.setAcknowledgeIntent(true);
@@ -51,6 +52,7 @@ public class TechQueryPrintingMobHook extends BaseHook {
         intent.setIntentFunction("tech_query_printing_mobile");
 
         this.setIntent(intent);
+        */
     }
 
 }
