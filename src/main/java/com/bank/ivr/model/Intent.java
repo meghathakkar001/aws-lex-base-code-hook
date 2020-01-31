@@ -5,11 +5,11 @@ import java.util.List;
 public class Intent {
 
     private String intentName;
-    private String intentAlias;
+    private String intentFunction;
     private List<Prerequisite> preRequisites;
     private IntentType intentType;
     private boolean acknowledgeIntent;
-    private String acknolwegementPrompt;
+    private String acknowledgementPrompt;
     private List<Slot> mandatorySlots;
     private List<Slot> optionalSlots;
     private String furtherQuestion;
@@ -54,12 +54,12 @@ public class Intent {
         this.acknowledgeIntent = acknowledgeIntent;
     }
 
-    public String getAcknolwegementPrompt() {
-        return acknolwegementPrompt;
+    public String getAcknowledgementPrompt() {
+        return acknowledgementPrompt;
     }
 
-    public void setAcknolwegementPrompt(String acknowledgementPrompt) {
-        this.acknolwegementPrompt = acknowledgementPrompt;
+    public void setAcknowledgementPrompt(String acknowledgementPrompt) {
+        this.acknowledgementPrompt = acknowledgementPrompt;
     }
 
     public List<Slot> getMandatorySlots() {
@@ -78,10 +78,6 @@ public class Intent {
         this.optionalSlots = optionalSlots;
     }
 
-    private List<Prerequisite> preRequisites;
-    private IntentType intentType;
-    private boolean acknowledgeIntent;
-    private String acknolwegementPrompt;
 
     public String getIntentName() {
         return intentName;
@@ -177,7 +173,7 @@ public class Intent {
             intent.setPreRequisites(preRequisites);
             intent.setIntentType(intentType);
             intent.setAcknowledgeIntent(acknowledgeIntent);
-            intent.setAcknolwegementPrompt(acknolwegementPrompt);
+            intent.setAcknowledgementPrompt(acknolwegementPrompt);
             intent.setMandatorySlots(mandatorySlots);
             intent.setOptionalSlots(optionalSlots);
             intent.intentFunction = this.intentFunction;

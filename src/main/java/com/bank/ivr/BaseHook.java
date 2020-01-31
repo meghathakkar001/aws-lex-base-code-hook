@@ -8,14 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.amazonaws.services.lambda.AWSLambda;
 import com.amazonaws.services.lambda.AWSLambdaClientBuilder;
-import com.amazonaws.services.lambda.invoke.LambdaInvokerFactory;
 import com.amazonaws.services.lambda.model.InvocationType;
 import com.amazonaws.services.lambda.model.InvokeRequest;
 import com.amazonaws.services.lambda.model.InvokeResult;
@@ -396,7 +394,7 @@ public abstract class BaseHook {
 			acknowledgeString="";
 		}
 		if (!intentAcknowledged && intent.isAcknowledgeIntent() ) {
-			request.getSessionAttributes().put("acknowledgementPrompt",acknowledgeString+intent.getAcknolwegementPrompt());
+			request.getSessionAttributes().put("acknowledgementPrompt",acknowledgeString+intent.getAcknowledgementPrompt());
 			System.out.println("acknowledgementPrompt set to: "+request.getSessionAttributes().get("acknowledgementPrompt"));
 			request.getSessionAttributes().put(intent.getIntentName()+"-intentAcknowledged", "Yes");
 		}else {
