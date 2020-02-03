@@ -5,7 +5,9 @@
 		"prerequisites" : null,
 		"lambda_function_name" : "IdentificationCodeHook",
 		"fq_prompt" : null,
-		"intent_type" : "default"
+		"intent_type" : "default",
+		"nm1" : "Sorry I didn't catch that, Please say or enter your Merchant or Terminal ID",
+		"nm2" : "Sorry I didn't catch that, Please say or enter your Merchant or Terminal ID"
 	},
 	"amend_bank_details" : {
 		"slot_list" : [],
@@ -26,14 +28,17 @@
 		"prerequisites" : null,
 		"lambda_function_name" : "AmendMerchNameCodeHook",
 		"fq_prompt" : null,
-		"intent_type" : "disamb"
+		"intent_type" : "disamb",
+		"default_tag" : "not_sure_change_of_details",
+		"nm1" : "Have any of your business details changed with companies house recently",
+		"nm2" : "Have any of your business details changed with companies house recently"
 	},
 	"query_speak_to_agent" : {
 		"slot_list" : [],
 		"prerequisites" : "identification",
 		"lambda_function_name" : "SpeakToAgentCodeHook",
-		"fq_prompt" : "Please elaborate more on why do you want to speak to an agent ?",
-		"intent_type" : "default"
+		"fq_prompt" : "What is it you would like to speak about? You can say things like amend bank details or my business name has changed",
+		"intent_type" : "further_question"
 	},
 	"yes_change_of_details" : {
 		"slot_list" : [],
@@ -61,31 +66,44 @@
 		"prerequisites" : null,
 		"lambda_function_name" : "TechQueryConnCodeHook",
 		"fq_prompt" : null,
-		"intent_type" : "disamb"
+		"intent_type" : "disamb",
+		"default_tag" : "menu_not_sure_query",
+		"default_tag" : "not_sure_change_of_details",
+		"nm1" : "What type of machine do you have?",
+		"nm2" : "What type of machine do you have?"
 	},
 	"tech_query_printing_mobile" : {
 		"slot_list" : ["disamb_menu_conn_conntype"],
 		"prerequisites" : null,
 		"lambda_function_name" : "TechQueryPrintingMobCodeHook",
 		"fq_prompt" : null,
-		"intent_type" : "disamb"
+		"intent_type" : "disamb",
+		"default_tag" : "menu_not_sure_query",
+		"nm1" : "What type of connection do you have?",
+		"nm2" : "What type of connection do you have?"
 	},
 	"tech_query_printing_desktop" : {
 		"slot_list" : ["disamb_menu_conn_conntype"],
 		"prerequisites" : null,
 		"lambda_function_name" : "TechQueryPrintingDesktopCodeHook",
 		"fq_prompt" : null,
-		"intent_type" : "disamb"
+		"intent_type" : "disamb",
+		"default_tag" : "menu_not_sure_query",
+		"nm1" : "What type of connection do you have?",
+		"nm2" : "What type of connection do you have?"
 	},
 	"tech_query_printing_portable" : {
 		"slot_list" : ["disamb_menu_conn_conntype"],
 		"prerequisites" : null,
 		"lambda_function_name" : "TechQueryPrintingPortableCodeHook",
 		"fq_prompt" : null,
-		"intent_type" : "disamb"
+		"intent_type" : "disamb",
+		"default_tag" : "menu_not_sure_query",
+		"nm1" : "What type of connection do you have?",
+		"nm2" : "What type of connection do you have?"
 	},
 	"tech_query_connection_phoneline" : {
-		"slot_list" : [],
+		"slot_list" : ["instrTwoOne","instrTwoTwo"],
 		"prerequisites" : "identification",
 		"lambda_function_name" : "TechQueryConnPhoneLineCodeHook",
 		"fq_prompt" : null,
@@ -95,6 +113,13 @@
 		"slot_list" : [],
 		"prerequisites" : "identification",
 		"lambda_function_name" : "TechQueryConnBroadbandCodeHook",
+		"fq_prompt" : null,
+		"intent_type" : "default"
+	},
+	"menu_not_sure_query" : {
+		"slot_list" : [],
+		"prerequisites" : "identification",
+		"lambda_function_name" : "MenuNotSureQueryCodeHook",
 		"fq_prompt" : null,
 		"intent_type" : "default"
 	}

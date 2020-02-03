@@ -103,7 +103,14 @@ public abstract class BaseHook {
         lexResponse= fillMandatorySlots(request);
         if(lexResponse!=null){
 
-            System.out.println(intent.getIntentName()+" Slot filling response: "+lexResponse);
+            System.out.println(intent.getIntentName()+" Mandatory Slot filling response: "+lexResponse);
+            return lexResponse;
+        }
+        
+        lexResponse = fillOptionalSlots(request);
+        if(lexResponse!=null){
+
+            System.out.println(intent.getIntentName()+" Optional Slot filling response: "+lexResponse);
             return lexResponse;
         }
 
@@ -288,7 +295,11 @@ public abstract class BaseHook {
 					lexResponse.setSessionAttributes(sessionAttributes);
 					lexResponse.setDialogAction(dialogAction);
 				} else{
-					lexResponse=finalRFCMessage();
+					if(intent.getIntentType()==IntentType.DISAMBIGUATION){
+						lexResponse = switchIntent(request,getLambdaFunctionName(intent.getDefaultTag()));
+					} else{
+						lexResponse = finalRFCMessage();
+					}
 				}
 
 				return lexResponse;
@@ -296,10 +307,56 @@ public abstract class BaseHook {
 				request.getSessionAttributes().remove(mandatorySlot.getSlotName()+ "Count");
 			}
 		}
+		
+		return null;
+	}
+	
+	protected LexResponse fillOptionalSlots(LexEvent request) {
+		for (Slot optionalSlot : intent.getOptionalSlots()) {
+			if(request.getSessionAttributes().get(optionalSlot.getSlotName()+ "Count")== null){
+				request.getSessionAttributes().put(optionalSlot.getSlotName()+ "Count","0");
+			} else {
+				int count = Integer.parseInt(request.getSessionAttributes().get(optionalSlot.getSlotName()+ "Count"));
+				request.getSessionAttributes().put(optionalSlot.getSlotName()+ "Count",String.valueOf(++count));
+				System.out.println("NM/NI count " + count);	
+			}
+			String slotValue = request.getCurrentIntent().getSlots()
+					.get(optionalSlot.getSlotName());
+			System.out.println(intent.getIntentName() + ": Slot value for "
+					+ optionalSlot.getSlotName() + " is: " + slotValue);
+			if (StringUtils.isNullOrEmpty(slotValue)) {
+				String slotPrompt= getSlotPrompt(request,optionalSlot);
+				LexResponse lexResponse = new LexResponse();
+				if(!StringUtils.isNullOrEmpty(slotPrompt)){
+					
+					Map<String, String> sessionAttributes = request
+							.getSessionAttributes();
+					DialogAction dialogAction = new DialogAction();
+					dialogAction.setIntentName(intent.getIntentName());
+					dialogAction.setType("ElicitSlot");
+					dialogAction.setSlotToElicit(optionalSlot.getSlotName());
+					if(this.getIntent().getIntentName().equals(request.getCurrentIntent().getName())){
+						dialogAction.setSlots(request.getCurrentIntent().getSlots());
+					}
+					Message message = new Message();
+					message.setContentType("SSML");
+					
+					message.setContent(slotPrompt);
+					dialogAction.setMessage(message);
+
+					lexResponse.setSessionAttributes(sessionAttributes);
+					lexResponse.setDialogAction(dialogAction);
+				}
+				return lexResponse;
+			}else{
+				request.getSessionAttributes().remove(optionalSlot.getSlotName()+ "Count");
+			}
+		}
+		
 		return null;
 	}
 
-	private String getSlotPrompt(LexEvent request,Slot mandatorySlot) {
+	protected String getSlotPrompt(LexEvent request,Slot mandatorySlot) {
 		int count = Integer.parseInt(request.getSessionAttributes().get(mandatorySlot.getSlotName()+ "Count"));
 		String acknowledgementPrompt=request.getSessionAttributes().get("acknowledgementPrompt");
 		String slotPrompt="<speak>";
@@ -419,6 +476,10 @@ public abstract class BaseHook {
 		this.rfc = request.getSessionAttributes().get("rfc");
 		this.rfcCodeHookAlias = request.getSessionAttributes().get(
 				"rfcCodeHookAlias");
+	}
+	
+	protected Intent getIntent(){
+		return this.intent;
 	}
 
 }

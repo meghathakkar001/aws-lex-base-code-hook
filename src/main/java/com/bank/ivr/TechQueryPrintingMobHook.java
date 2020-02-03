@@ -46,11 +46,24 @@ public class TechQueryPrintingMobHook extends BaseHook {
         Slot machineID= new Slot();
         machineID.setSlotName("disamb_menu_conn_conntype");
         machineID.setPrimaryPrompt("What type of connection do you have?");
+        String[] noMatchPrompts = new String[2];
+        noMatchPrompts[0] = "What type of connection do you have?";
+        noMatchPrompts[1] = "What type of connection do you have?";
+        machineID.setNoMatchPrompts(noMatchPrompts);
         slots.add(machineID);
         intent.setMandatorySlots(slots);
         intent.setPreRequisites(new ArrayList<>());
+<<<<<<< HEAD
         intent.setIntentFunction("tech_query_printing_mobile");
 
+=======
+        intent.setIntentAlias("tech_query_printing_mobile");
+        intent.setDefaultTag("menu_not_sure_query");
+        
+        List<Slot> optionalSlots = new ArrayList<>();
+        intent.setOptionalSlots(optionalSlots);
+        
+>>>>>>> origin/feature/lexcodehook
         this.setIntent(intent);
         */
     }

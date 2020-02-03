@@ -11,7 +11,7 @@ import com.bank.ivr.model.Prerequisite;
 import com.bank.ivr.model.Slot;
 import com.bank.ivr.model.Intent.IntentType;
 
-public class NoChangeOfDetailsHook extends BaseHook {
+public class MenuNotSureQueryHook extends BaseHook {
 	@Override
     protected LexResponse finalRFCMessage() {
         DialogAction dialogAction= new DialogAction();
@@ -35,17 +35,16 @@ public class NoChangeOfDetailsHook extends BaseHook {
     }
 
     @Override
-    protected void initializeIntentHook() {
-	    /*
+    protected void initializeIntent() {
     	Intent intent= new Intent();
-        intent.setIntentName("no_change_of_details");
+        intent.setIntentName("menu_not_sure_query");
         intent.setAcknowledgeIntent(true);
-        intent.setAcknowledgementPrompt("Okay. ");
+        intent.setAcknolwegementPrompt("Okay. ");
         intent.setIntentType(IntentType.DEFAULT);
         List<Slot> slots= new ArrayList<>();
         intent.setMandatorySlots(slots);
         intent.setPreRequisites(new ArrayList<>());
-        intent.setIntentFunction("no_change_of_details");
+        intent.setIntentAlias("menu_not_sure_query");
         List<Prerequisite> preRequisites= new ArrayList<>();
         Prerequisite prerequisite= new Prerequisite();
         prerequisite.setIntentName("identification");
@@ -55,7 +54,6 @@ public class NoChangeOfDetailsHook extends BaseHook {
         List<Slot> optionalSlots = new ArrayList<>();
         intent.setOptionalSlots(optionalSlots);
         this.setIntent(intent);
-        */
     }
 
 }

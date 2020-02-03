@@ -35,5 +35,22 @@ public class SpeakToAgentCodeHook extends BaseHook {
     protected void initializeIntentHook() {
 
     }
+    protected void initializeIntent() {
+    	Intent intent= new Intent();
+        intent.setIntentName("query_speak_to_agent");
+        intent.setAcknowledgeIntent(true);
+        intent.setAcknolwegementPrompt("Okay. Speak to agent.");
+        intent.setIntentType(IntentType.FURTHER_QUESTIONS);
+        intent.setFurtherQuestion("What is it you would like to speak about? You can say things like amend bank details or my business name has changed");
+        List<Slot> slots= new ArrayList<>();
+        intent.setMandatorySlots(slots);
+        intent.setPreRequisites(new ArrayList<>());
+        intent.setIntentAlias("query_speak_to_agent");
+        
+        List<Slot> optionalSlots = new ArrayList<>();
+        intent.setOptionalSlots(optionalSlots);
+
+        this.setIntent(intent);
+    }
 
 }

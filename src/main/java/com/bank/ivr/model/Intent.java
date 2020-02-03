@@ -8,8 +8,9 @@ public class Intent {
     private String intentFunction;
     private List<Prerequisite> preRequisites;
     private IntentType intentType;
-    private boolean acknowledgeIntent;
-    private String acknowledgementPrompt;
+    private String defaultTag;
+	private boolean acknowledgeIntent;
+    private String acknolwegementPrompt;
     private List<Slot> mandatorySlots;
     private List<Slot> optionalSlots;
     private String furtherQuestion;
@@ -33,6 +34,14 @@ public class Intent {
     public IntentType getIntentType() {
         return intentType;
     }
+    
+    public String getDefaultTag() {
+		return defaultTag;
+	}
+
+	public void setDefaultTag(String defaultTag) {
+		this.defaultTag = defaultTag;
+	}
 
     public void setIntentType(IntentType intentType) {
         this.intentType = intentType;
