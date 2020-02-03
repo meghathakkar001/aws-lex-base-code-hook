@@ -39,18 +39,25 @@ public class TechQueryConnHook extends BaseHook {
     	Intent intent= new Intent();
         intent.setIntentName("tech_query_connection");
         intent.setAcknowledgeIntent(true);
-        intent.setAcknolwegementPrompt("Okay. About a connection issue");
+        intent.setAcknolwegementPrompt("Okay. About a connection issue. ");
         intent.setIntentType(IntentType.DISAMBIGUATION);
         List<Slot> slots= new ArrayList<>();
         intent.setMandatorySlots(slots);
         Slot machineID= new Slot();
         machineID.setSlotName("disamb_menu_conn_machinetype");
         machineID.setPrimaryPrompt("What type of machine do you have?");
+        String[] noMatchPrompts = new String[2];
+        noMatchPrompts[0] = "What type of machine do you have?";
+        noMatchPrompts[1] = "What type of machine do you have?";
+        machineID.setNoMatchPrompts(noMatchPrompts);
         slots.add(machineID);
         intent.setMandatorySlots(slots);
         intent.setPreRequisites(new ArrayList<>());
         intent.setIntentAlias("tech_query_connection");
-
+        intent.setDefaultTag("menu_not_sure_query");
+        
+        List<Slot> optionalSlots = new ArrayList<>();
+        intent.setOptionalSlots(optionalSlots);
         this.setIntent(intent);
     }
 

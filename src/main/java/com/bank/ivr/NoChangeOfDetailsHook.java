@@ -51,6 +51,8 @@ public class NoChangeOfDetailsHook extends BaseHook {
         prerequisite.setLambdaCodeHookAlias("IdentificationCodeHook");
         preRequisites.add(prerequisite);
         intent.setPreRequisites(preRequisites);
+        List<Slot> optionalSlots = new ArrayList<>();
+        intent.setOptionalSlots(optionalSlots);
         this.setIntent(intent);
     }
 

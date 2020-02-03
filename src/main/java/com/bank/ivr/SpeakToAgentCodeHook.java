@@ -43,6 +43,9 @@ public class SpeakToAgentCodeHook extends BaseHook {
         intent.setMandatorySlots(slots);
         intent.setPreRequisites(new ArrayList<>());
         intent.setIntentAlias("query_speak_to_agent");
+        
+        List<Slot> optionalSlots = new ArrayList<>();
+        intent.setOptionalSlots(optionalSlots);
 
         this.setIntent(intent);
     }

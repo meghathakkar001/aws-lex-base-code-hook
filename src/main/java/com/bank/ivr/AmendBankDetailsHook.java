@@ -35,7 +35,7 @@ public class AmendBankDetailsHook extends BaseHook{
         intent.setIntentName("amend_bank_details");
         intent.setAcknowledgeIntent(true);
         intent.setMandatorySlots(new ArrayList<Slot>());
-        intent.setAcknolwegementPrompt("Okay. Amend Bank Details.");
+        intent.setAcknolwegementPrompt("Okay <break time=\"5s\" /> Amend Bank Details ");
         intent.setIntentType(IntentType.DEFAULT);
         List<Prerequisite> preRequisites= new ArrayList<>();
         Prerequisite prerequisite= new Prerequisite();
@@ -44,8 +44,12 @@ public class AmendBankDetailsHook extends BaseHook{
         preRequisites.add(prerequisite);
         intent.setPreRequisites(preRequisites);
         intent.setIntentAlias("AmendBankDetails");
+        
+        List<Slot> optionalSlots = new ArrayList<>();
+        intent.setOptionalSlots(optionalSlots);
 
         this.setIntent(intent);
     }
+    
     
 }
