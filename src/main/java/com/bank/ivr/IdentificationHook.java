@@ -33,37 +33,4 @@ public class IdentificationHook extends BaseHook{
         return null;
     }
 
-    @Override
-    protected void initializeIntentHook() {
-
-    }
-
-
-
-    protected void initializeIntent() {
-        Intent intent= new Intent();
-        intent.setIntentName("identification");
-        intent.setAcknowledgeIntent(false);
-        intent.setIntentType(IntentType.DEFAULT);
-        List<Slot> slots= new ArrayList<>();
-
-        Slot machineID= new Slot();
-        String[] noMatchPrompts = new String[2];
-        noMatchPrompts[0] = "Sorry I didn't catch that, Please say or enter your Merchant or Terminal ID";
-        noMatchPrompts[1] = "Sorry I didn't catch that, Please say or tap in your Merchant or Terminal ID";
-        machineID.setNoMatchPrompts(noMatchPrompts);
-        machineID.setSlotName("midtid");
-        machineID.setPrimaryPrompt("<break time=\"1s\" />For identification please tell me your merchant I D");
-        slots.add(machineID);
-        intent.setMandatorySlots(slots);
-        intent.setPreRequisites(new ArrayList<>());
-        intent.setIntentAlias("identification");
-        
-        List<Slot> optionalSlots = new ArrayList<>();
-        intent.setOptionalSlots(optionalSlots);
-        this.setIntent(intent);
-
-    }
-
-
 }

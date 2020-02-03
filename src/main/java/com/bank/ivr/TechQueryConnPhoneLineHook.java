@@ -37,41 +37,6 @@ public class TechQueryConnPhoneLineHook extends BaseHook {
 		return null;
 	}
 
-	@Override
-	protected void initializeIntent() {
-		Intent intent = new Intent();
-		intent.setIntentName("tech_query_connection_phoneline");
-		intent.setAcknowledgeIntent(true);
-		intent.setAcknolwegementPrompt("Okay.");
-		intent.setIntentType(IntentType.DEFAULT);
-		List<Slot> slots = new ArrayList<>();
-		intent.setMandatorySlots(slots);
-		intent.setPreRequisites(new ArrayList<>());
-		intent.setIntentAlias("tech_query_connection_phoneline");
-		List<Prerequisite> preRequisites = new ArrayList<>();
-		Prerequisite prerequisite = new Prerequisite();
-		prerequisite.setIntentName("identification");
-		prerequisite.setLambdaCodeHookAlias("IdentificationCodeHook");
-		preRequisites.add(prerequisite);
-		intent.setPreRequisites(preRequisites);
-		List<Slot> optionalSlots = new ArrayList<>();
-		Slot instr_ts021 = new Slot();
-		instr_ts021.setSlotName("instrTwoOne");
-		instr_ts021
-				.setPrimaryPrompt(" Please try restarting your machine. <break time=\"10s\" /> "
-						+ "Did it resolve your issue ?");
-		optionalSlots.add(instr_ts021);
-
-		Slot instr_ts022 = new Slot();
-		instr_ts022.setSlotName("instrTwoTwo");
-		instr_ts022
-				.setPrimaryPrompt(" Please remove the lan wire and reconnect it. <break time=\"5s\" "
-						+ "Did it resolve your issue?");
-		optionalSlots.add(instr_ts022);
-		intent.setOptionalSlots(optionalSlots);
-
-		this.setIntent(intent);
-	}
 
 	@Override
 	protected LexResponse fillOptionalSlots(LexEvent request) {

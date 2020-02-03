@@ -10,7 +10,7 @@ import com.bank.ivr.model.Message;
 import com.bank.ivr.model.Slot;
 import com.bank.ivr.model.Intent.IntentType;
 
-public class TechQueryPrintingMobHook extends BaseHook {
+public class TechQueryConnBroadbandHook extends BaseHook {
 	@Override
     protected LexResponse finalRFCMessage() {
         DialogAction dialogAction= new DialogAction();

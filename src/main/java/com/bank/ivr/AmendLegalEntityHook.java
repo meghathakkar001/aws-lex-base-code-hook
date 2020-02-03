@@ -1,17 +1,13 @@
 package com.bank.ivr;
 
+import com.bank.ivr.model.*;
+import com.bank.ivr.model.Intent.IntentType;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bank.ivr.model.DialogAction;
-import com.bank.ivr.model.Intent;
-import com.bank.ivr.model.LexResponse;
-import com.bank.ivr.model.Message;
-import com.bank.ivr.model.Slot;
-import com.bank.ivr.model.Intent.IntentType;
-
-public class TechQueryPrintingMobHook extends BaseHook {
-	@Override
+public class AmendLegalEntityHook extends BaseHook{
+    @Override
     protected LexResponse finalRFCMessage() {
         DialogAction dialogAction= new DialogAction();
         dialogAction.setFulfillmentState("Fulfilled");
@@ -32,6 +28,6 @@ public class TechQueryPrintingMobHook extends BaseHook {
     protected LexResponse fulfillIntent() {
         return null;
     }
-
-
+    
+    
 }

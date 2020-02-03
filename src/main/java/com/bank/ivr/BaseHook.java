@@ -407,7 +407,9 @@ public abstract class BaseHook {
 
 	}
 
-	protected abstract void initializeIntentHook();
+	protected void initializeIntentHook(){
+		
+	}
 
 
 	protected void initializeIntentBase() {

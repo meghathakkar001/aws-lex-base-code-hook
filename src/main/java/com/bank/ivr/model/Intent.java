@@ -10,7 +10,7 @@ public class Intent {
     private IntentType intentType;
     private String defaultTag;
 	private boolean acknowledgeIntent;
-    private String acknolwegementPrompt;
+    private String acknowledgementPrompt;
     private List<Slot> mandatorySlots;
     private List<Slot> optionalSlots;
     private String furtherQuestion;
